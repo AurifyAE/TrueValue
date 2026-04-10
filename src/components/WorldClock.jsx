@@ -1,0 +1,133 @@
+import React, { useEffect, useState } from "react";
+import { Box, Typography } from "@mui/material";
+
+const clockConfig = [
+  {
+    key: "uae",
+    label: "UAE",
+    timeZone: "Asia/Dubai",
+    flag: "/images/uae.png",
+  },
+  {
+    key: "usa",
+    label: "USA",
+    timeZone: "America/New_York", // 🔥 US Eastern Time
+    flag: "/images/usa.png",
+  },
+  {
+    key: "london",
+    label: "LONDON",
+    timeZone: "Europe/London",
+    flag: "/images/uk.png",
+  },
+];
+
+
+const WorldClockHorizontal = () => {
+  const [times, setTimes] = useState({});
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+
+      const timeOptions = {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      };
+
+      const updatedTimes = {};
+
+      clockConfig.forEach((clock) => {
+        updatedTimes[clock.key] = now.toLocaleTimeString("en-US", {
+          ...timeOptions,
+          timeZone: clock.timeZone,
+        });
+      });
+
+      setTimes(updatedTimes);
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-evenly",
+        gap: "2vw",
+        mt: "1vw",
+        padding: "1vw 2vw",
+        // backdropFilter: "blur(2px)",
+
+        width: "100%",
+      }}
+    >
+      {clockConfig.map((clock) => (
+        <Box
+          key={clock.key}
+          sx={{
+            textAlign: "center",
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+            
+            
+            gap: {
+              xs: "10px",
+              lg: ".2vw",
+            },
+          }}
+        >
+          <Box
+            sx={{
+              width: {
+                xs: "30px",
+                lg: "3vw",
+              },
+            }}
+          >
+            <img
+              src={clock.flag}
+              alt={clock.label}
+              style={{ width: "100%", height: "auto" }}
+            />
+          </Box>
+          <Box>
+            <Typography
+              sx={{
+                fontSize: {
+                  xs: "14px",
+                  lg: "1.2vw",
+                },
+                fontWeight: 500,
+                color: "#fff",
+              }}
+            >
+              {clock.label}
+            </Typography>
+
+            <Typography
+              sx={{
+                fontSize: {
+                  xs: "14px",
+                  lg: "1.4vw",
+                },
+                color: "#fff",
+              }}
+            >
+              {times[clock.key] || "--:-- AM"}
+            </Typography>
+          </Box>
+        </Box>
+      ))}
+    </Box>
+  );
+};
+
+export default WorldClockHorizontal;
