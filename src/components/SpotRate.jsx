@@ -81,8 +81,8 @@ const SpotRate = () => {
   const getColors = (dir) => {
     if (dir === "rise")
       return {
-        bgColor: "#00FF15",
-        border: "1px solid #00ff9d",
+        bgColor: "#00bb0f",
+        border: "1px solid #00bb0f",
         color: "white",
       };
     if (dir === "fall")
